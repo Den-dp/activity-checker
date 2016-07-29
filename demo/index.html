@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <script src="../node_modules/rx-lite/rx.lite.js"></script>
+    <script src="../dist/activity-checker.js"></script>
+    <style>
+        html {
+            height: 100%;
+        }
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            font-family: monospace;
+            transition: .2s background-color ease-in;
+        }
+
+        .active {
+            background-color: green;
+        }
+
+        .idle {
+            background-color: yellow;
+        }
+
+        .away {
+            background-color: lightgray;
+        }
+    </style>
+</head>
+<body>
+<div id="status"></div>
+<div id="log"></div>
+<script>
+    (function () {
+        function log(status) {
+            document.querySelector('#log').innerText += new Date().toLocaleTimeString() + ' ' + status + '\n';
+        }
+
+        var activityChecker = new ActivityChecker({
+            namespace: 'test',
+            idleTimeout: 5000,
+            awayTimeout: 10000,
+            keepAliveInterval: 15000,
+            onIdle: function () {
+                document.title = 'Idle';
+                document.querySelector('body').className = 'idle';
+                document.querySelector('#status').innerText = 'IDLE';
+                log('Active -> Idle');
+            },
+            onActive: function () {
+                document.title = 'Active';
+                document.querySelector('body').className = 'active';
+                document.querySelector('#status').innerText = 'ACTIVE';
+                log('Idle -> Active');
+            },
+            onDismiss: function () {
+                document.querySelector('body').className = 'active';
+                document.querySelector('#status').innerText = 'ACTIVE';
+                log('Idle -> Dismiss -> Active');
+            },
+            onAway: function () {
+                document.title = 'Away';
+                document.querySelector('body').className = 'away';
+                document.querySelector('#status').innerText = 'AWAY';
+                log('Idle -> Away');
+            },
+            onKeepAlive: function () {
+                log('KeepAlive');
+            }
+        });
+
+        // setTimeout(function () {
+        //     activityChecker.dispose();
+        // }, 10000)
+    })();
+</script>
+</body>
+</html>
