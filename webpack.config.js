@@ -32,7 +32,7 @@ module.exports = {
     },
 
     externals: {
-        'rx-lite': 'Rx'
+        'rx-lite': 'rx-lite'
         // 'rx': 'Rx'
         // 'rxjs': 'Rx'
     },
