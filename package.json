@@ -17,6 +17,10 @@
     "type": "git",
     "url": "git+https://github.com/Den-dp/activity-checker.git"
   },
+  "files": [
+    "dist",
+    "demo"
+  ],
   "keywords": [],
   "author": "Denis Bendrikov <Denis.Bendrikov@gmail.com>",
   "license": "MIT",
