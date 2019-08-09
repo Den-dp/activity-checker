@@ -1,7 +1,7 @@
-import * as Rx from 'rx-lite';
+const Rx = require('rx-lite');
 
 Rx.Observable.prototype.doConsoleLog = function (message) {
-    if (DEBUG) {
+    if (true) {
         return this.tap(
             function (x) {
                 if (message) {
@@ -31,7 +31,7 @@ Rx.Observable.prototype.doConsoleLog = function (message) {
 
 function noop() { }
 
-function ActivityChecker({
+module.exports = function ActivityChecker({
     nameSpace = 'AC',
     idleTimeout = 5000,
     awayTimeout = 10000,
@@ -91,9 +91,9 @@ function ActivityChecker({
         .share();
 
     /*
-    idleSource         ------A-------A------->
-    siteActivitySource B-B-----B-B-B-----B-B->
-    dismissSource      --------C---------C--->
+    idleSource         ------I---------I------>
+    siteActivitySource A-A-----A-A-A-----A-A-->
+    dismissSource      --------D---------D---->
     */
     const dismissSource = idleSource.flatMap(() => publishedSiteActivity.take(1))
         .do(onDismiss)
@@ -118,5 +118,3 @@ function ActivityChecker({
         connection.dispose();
     };
 }
-
-export { ActivityChecker as default };
