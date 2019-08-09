@@ -1,0 +1,17 @@
+language: node_js
+node_js:
+  - 10
+
+branches:
+  only:
+    - master
+
+script:
+  - npm run build
+
+jobs:
+  include:
+    - stage: release
+      node_js: lts/*
+      script:
+        - npx semantic-release
