@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>Document</title>
-    <script src="../node_modules/rx-lite/rx.lite.js"></script>
-    <script src="../dist/activity-checker.js"></script>
+    <script src="../node_modules/rxjs/bundles/rxjs.umd.js"></script>
+    <script src="../dist/activity-checker.umd.js"></script>
     <style>
         html {
             height: 100%;
@@ -43,6 +43,8 @@
             document.querySelector('#log').innerText += new Date().toLocaleTimeString() + ' ' + status + '\n';
         }
 
+        const ActivityChecker = window.ac.ActivityChecker;
+
         var activityChecker = new ActivityChecker({
             namespace: 'test',
             idleTimeout: 5000,
@@ -77,7 +79,7 @@
         });
 
         // setTimeout(function () {
-        //     activityChecker.dispose();
+        //     activityChecker.unsubscribe();
         // }, 10000)
     })();
 </script>

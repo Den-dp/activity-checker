@@ -2,7 +2,8 @@
   "name": "activity-checker",
   "version": "1.0.0",
   "description": "User activity checker that works across browser tabs/windows.",
-  "main": "dist/index.js",
+  "main": "dist/activity-checker.umd.js",
+  "types": "dist/index.d.ts",
   "scripts": {
     "build": "webpack --mode production",
     "start": "webpack --mode development --watch",
@@ -26,10 +27,13 @@
   "homepage": "https://github.com/Den-dp/activity-checker#readme",
   "devDependencies": {
     "clean-webpack-plugin": "^3.0.0",
-    "rx-lite": "^4.0.8",
+    "rxjs": "^6.5.2",
     "semantic-release": "^15.13.19",
+    "ts-loader": "^6.0.4",
+    "typescript": "^3.5.3",
     "webpack": "^4.39.1",
-    "webpack-cli": "^3.3.6"
+    "webpack-cli": "^3.3.6",
+    "webpack-rxjs-externals": "^2.0.0"
   },
   "dependencies": {}
 }
