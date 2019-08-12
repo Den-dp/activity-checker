@@ -1,37 +1,8 @@
-import * as Rx from 'rx-lite';
-
-Rx.Observable.prototype.doConsoleLog = function (message) {
-    if (DEBUG) {
-        return this.tap(
-            function (x) {
-                if (message) {
-                    console.info(`[AC::${message}]`, x);
-                } else {
-                    console.info(x);
-                }
-            },
-            function (e) {
-                if (message) {
-                    console.error(`[AC::${message}]`, e);
-                } else {
-                    console.error(e);
-                }
-            },
-            function () {
-                if (message) {
-                    console.log(`[AC::${message}]` + ' -> completed');
-                } else {
-                    console.info('completed');
-                }
-            }
-        );
-    }
-    return this;
-};
+const Rx = require('rx-lite');
 
 function noop() { }
 
-function ActivityChecker({
+module.exports = function ActivityChecker({
     nameSpace = 'AC',
     idleTimeout = 5000,
     awayTimeout = 10000,
@@ -65,45 +36,38 @@ function ActivityChecker({
     const pageActivitySource = Rx.Observable.merge(DOMObservables)
         .startWith('initialization')
         .throttle(1000)
-        .do(notifyOtherTabs)
-        .doConsoleLog('pageActivitySource');
+        .do(notifyOtherTabs);
 
     const activityFromAnotherTabSource = Rx.Observable.fromEvent(window, 'storage')
         .filter(e => e.key === nameSpace)
-        .map(v => v.newValue)
-        .doConsoleLog('activityFromAnotherTabSource');
+        .map(v => v.newValue);
 
     const siteActivitySource = Rx.Observable.merge(pageActivitySource, activityFromAnotherTabSource)
-        .do(onActive)
-        .doConsoleLog('siteActivity');
+        .do(onActive);
 
     const publishedSiteActivity = siteActivitySource.publish();
 
     const keepAliveSource = Rx.Observable.interval(keepAliveInterval)
-        .do(onKeepAlive)
-        .doConsoleLog('keepAliveSource');
+        .do(onKeepAlive);
 
     const keepAliveSubscription = keepAliveSource.subscribe();
 
     const idleSource = publishedSiteActivity.debounce(idleTimeout)
         .do(onIdle)
-        .doConsoleLog('idleSource')
         .share();
 
     /*
-    idleSource         ------A-------A------->
-    siteActivitySource B-B-----B-B-B-----B-B->
-    dismissSource      --------C---------C--->
+    idleSource         ------I---------I------>
+    siteActivitySource A-A-----A-A-A-----A-A-->
+    dismissSource      --------D---------D---->
     */
     const dismissSource = idleSource.flatMap(() => publishedSiteActivity.take(1))
-        .do(onDismiss)
-        .doConsoleLog('dismissSource');
+        .do(onDismiss);
 
     const dismissSubscription = dismissSource.subscribe();
 
     const awaySource = publishedSiteActivity.debounce(awayTimeout)
-        .do(onAway)
-        .doConsoleLog('awaySource');
+        .do(onAway);
 
     const awaySubscription = awaySource.subscribe(()=>{
         this.dispose();
@@ -118,5 +82,3 @@ function ActivityChecker({
         connection.dispose();
     };
 }
-
-export { ActivityChecker as default };
