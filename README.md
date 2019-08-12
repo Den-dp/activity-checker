@@ -17,6 +17,10 @@ Also *AC* can call your function passed into `onKeepAlive()` callback every `kee
 
 Usage of *AC* is very simple:
 ```js
+import { ActivityChecker } from 'activity-checker';
+// or if loaded as UMD
+// const ActivityChecker = window.ac.ActivityChecker;
+
 new ActivityChecker({
     idleTimeout: 5000,
     awayTimeout: 10000,
@@ -37,6 +41,8 @@ It is worth mentioning that *AC* uses inside the idea of namespaces. The `nameSp
 
 Advances usage:
 ```js
+import { ActivityChecker } from 'activity-checker';
+
 new ActivityChecker({
     nameSpace: 'mySite', //if not defined 'AC' is default value
     idleTimeout: 5000,
