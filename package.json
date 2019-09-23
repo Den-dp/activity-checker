@@ -2,7 +2,7 @@
   "name": "activity-checker",
   "version": "1.0.0",
   "description": "User activity checker that works across browser tabs/windows.",
-  "main": "dist/index.js",
+  "main": "dist/activity-checker.js",
   "scripts": {
     "build": "webpack --mode production",
     "start": "webpack --mode development --watch",
