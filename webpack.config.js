@@ -8,7 +8,11 @@ module.exports = {
     },
 
     externals: {
-        'rx-lite': 'Rx',
+        'rx-lite': {
+          commonjs: 'rx',
+          commonjs2: 'rx',
+          root: 'Rx'
+        }
     },
 
     devtool: 'source-map',
