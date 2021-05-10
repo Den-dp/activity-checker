@@ -93,7 +93,7 @@ new ActivityChecker({
 [package-icon]: https://nodei.co/npm/activity-checker.svg?downloads=true
 [package-url]: https://npmjs.org/package/activity-checker
 [package-ci-image]: https://img.shields.io/travis/Den-dp/activity-checker.svg?style=flat-square
-[package-ci-url]: https://travis-ci.org/Den-dp/activity-checker
+[package-ci-url]: https://travis-ci.com/Den-dp/activity-checker
 [package-dependencies-image]: https://img.shields.io/david/den-dp/activity-checker.svg?style=flat-square
 [package-dependencies-url]: https://david-dm.org/den-dp/activity-checker
 [package-devdependencies-image]: https://img.shields.io/david/dev/den-dp/activity-checker.svg?style=flat-square
