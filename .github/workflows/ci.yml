@@ -1,21 +1,45 @@
 name: CI
 
 on:
+  push:
+    branches:
+      - master
+      - next
+      - beta
+      - "*.x" # maintenance releases branches
+
   pull_request:
     branches:
-     - master
+     - "*"
 
   workflow_dispatch:
 
 jobs:
-  build:
-    runs-on: ubuntu-20.04
 
+  build-package:
+    runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v2
         with:
           node-version: 14
           cache: npm
-      - run: npm install
+      - run: npm ci
       - run: npm run build
+
+  release-package:
+    runs-on: ubuntu-20.04
+    if: github.event_name == 'push'
+    needs: [build-package]
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: 14
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+      - run: npx semantic-release@18
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
